@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mr. Rocha’s English Class: Thanksgiving</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Easy-to-Read Google Font: Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Load FontAwesome for crisp icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Nunito', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            autumn: {
+              50: '#fff8f1',
+              100: '#feecdc',
+              500: '#ff5a1f',
+              600: '#d03801',
+              700: '#b43403',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Base typography & smooth transitions */
+    body {
+      font-family: 'Nunito', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Required Shiny Blue Border for Name, Date, and All Answer Boxes */
+    .shiny-blue-box {
+      border: 2.5px solid #00a8ff !important;
+      box-shadow: 0 0 10px rgba(0, 168, 255, 0.55), inset 0 0 4px rgba(0, 168, 255, 0.15) !important;
+      transition: all 0.25s ease;
+    }
+
+    .shiny-blue-box:focus-within,
+    .shiny-blue-box:focus {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.85), inset 0 0 6px rgba(56, 189, 248, 0.25) !important;
+      outline: none;
+    }
+
+    /* Validation states overriding border subtly while keeping clarity */
+    .answer-correct {
+      border: 2.5px solid #10b981 !important;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5) !important;
+      background-color: rgba(16, 185, 129, 0.08) !important;
+    }
+
+    .answer-incorrect {
+      border: 2.5px solid #ef4444 !important;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.5) !important;
+      background-color: rgba(239, 68, 68, 0.08) !important;
+    }
+
+    /* Full-fit responsive media containers */
+    .media-full-fit {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 0.75rem;
+    }
+
+    /* Memorama 3D Flip Card Styles */
+    .memory-card {
+      perspective: 1000px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .memory-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .memory-card.flipped .memory-card-inner,
+    .memory-card.matched .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memory-card-front,
+    .memory-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem;
+      text-align: center;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+    .memory-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Puzzle Tile Styles */
+    .puzzle-tile {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
+    }
+    .puzzle-tile:hover:not(.locked) {
+      transform: scale(1.02);
+      z-index: 10;
+    }
+    .puzzle-tile.selected-tile {
+      outline: 3px solid #f59e0b;
+      outline-offset: -3px;
+      z-index: 20;
+      transform: scale(1.03);
+    }
+
+    /* Sentence Scramble Word Chip */
+    .word-chip {
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.15s ease, background-color 0.2s ease;
+    }
+    .word-chip:active:not(.locked) {
+      transform: scale(0.95);
+    }
+
+    /* Dark mode date input calendar icon visibility fix */
+    .dark input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+    }
+
+    /* Print Styles: Start cleanly at the very top of the page */
+    @media print {
+      @page {
+        margin: 0.5in;
+        size: auto;
+      }
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      header,
+      .no-print,
+      #stepNavBar,
+      #section-intro,
+      .activity-section {
+        display: none !important;
+      }
+      #section-results {
+        display: block !important;
+        position: static !important;
+        top: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+      }
+      #section-results * {
+        color: #111827 !important;
+      }
+      #section-results .print-keep-white,
+      #section-results .print-keep-white * {
+        color: #ffffff !important;
+      }
+      .print-break-inside-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="bg-amber-50/60 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Sticky Top Header -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-amber-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Title & Class Emblem -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-md shrink-0">
+            <i class="fa-solid fa-feather-pointed text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Mr. Rocha’s English Class: <span class="text-orange-600 dark:text-amber-400">Thanksgiving</span>
+            </h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold" id="headerSubtitle">
+              Interactive English Language Worksheet
+            </p>
+          </div>
+        </div>
+
+        <!-- Header Action Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Quick Submit / View Results Button -->
+          <button type="button" onclick="submitWorksheet()"
+            class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Submit &amp; Results</span>
+          </button>
+
+          <!-- Dark / Light Mode Toggle -->
+          <button type="button" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle Dark or Light Mode"
+            class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-amber-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-2 cursor-pointer">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+            <span id="themeText" class="hidden sm:inline">Dark Mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mt-3">
+        <div class="flex justify-between items-center text-xs font-bold mb-1">
+          <span class="text-slate-600 dark:text-slate-300" id="progressLabel">Section: Introduction (0 of 8 Activities Checked)</span>
+          <span class="text-orange-600 dark:text-amber-400" id="progressPercent">0%</span>
+        </div>
+        <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+          <div id="progressBarFill" class="h-full rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-500 transition-all duration-500" style="width: 5%;"></div>
+        </div>
+      </div>
+
+      <!-- Quick Section Pills -->
+      <nav id="stepNavBar" class="mt-2.5 flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar" aria-label="Activity Navigation">
+        <button type="button" onclick="goToSection(0)" data-nav="0" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Intro</button>
+        <button type="button" onclick="goToSection(1)" data-nav="1" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 1</button>
+        <button type="button" onclick="goToSection(2)" data-nav="2" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 2</button>
+        <button type="button" onclick="goToSection(3)" data-nav="3" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 3</button>
+        <button type="button" onclick="goToSection(4)" data-nav="4" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 4</button>
+        <button type="button" onclick="goToSection(5)" data-nav="5" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 5</button>
+        <button type="button" onclick="goToSection(6)" data-nav="6" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 6</button>
+        <button type="button" onclick="goToSection(7)" data-nav="7" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 7</button>
+        <button type="button" onclick="goToSection(8)" data-nav="8" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Act 8</button>
+        <button type="button" onclick="submitWorksheet()" data-nav="9" class="nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer">Results</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
+
+    <!-- Toast Notification Banner (replaces alert) -->
+    <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm bg-slate-900 dark:bg-slate-800 text-white border border-sky-400 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all">
+      <i class="fa-solid fa-circle-info text-sky-400 text-lg"></i>
+      <span id="toastMessage" class="text-sm font-semibold"></span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 0: INTRODUCTION & STUDENT DETAILS (Only place Image1 appears) -->
+    <!-- ===================================================================== -->
+    <section id="section-intro" class="worksheet-section bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 mb-1">
+            Welcome Students
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+            Thanksgiving Interactive Worksheet
+          </h2>
+        </div>
+        <div class="text-sm font-bold text-slate-500 dark:text-slate-400">
+          8 Interactive Activities
+        </div>
+      </div>
+
+      <!-- Student Name & Dropdown Calendar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-6">
+        <div>
+          <label for="studentName" class="block text-sm font-extrabold text-slate-700 dark:text-slate-200 mb-2">
+            <i class="fa-solid fa-user-graduate text-sky-500 mr-1.5"></i> Student Full Name:
+          </label>
+          <input type="text" id="studentName" placeholder="Type your full name here..."
+            class="shiny-blue-box w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold text-base" />
+        </div>
+
+        <div>
+          <label for="worksheetDate" class="block text-sm font-extrabold text-slate-700 dark:text-slate-200 mb-2">
+            <i class="fa-solid fa-calendar-days text-sky-500 mr-1.5"></i> Select Date (Dropdown Calendar):
+          </label>
+          <input type="date" id="worksheetDate"
+            class="shiny-blue-box w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold text-base" />
+        </div>
+      </div>
+
+      <!-- Instructions Card -->
+      <div class="bg-amber-50 dark:bg-slate-800/80 border border-amber-200 dark:border-slate-700 rounded-2xl p-4 sm:p-5 mb-6">
+        <h3 class="font-extrabold text-base sm:text-lg text-amber-900 dark:text-amber-300 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-compass"></i> How to Complete This Worksheet:
+        </h3>
+        <ul class="space-y-1.5 text-sm sm:text-base text-slate-700 dark:text-slate-200 list-disc list-inside">
+          <li>Enter your <strong>Name</strong> and choose the <strong>Date</strong> from the dropdown calendar above.</li>
+          <li>Complete each activity and click <strong>"Check Answers"</strong> to see your corrections. Once checked, answers are locked.</li>
+          <li>Use the <strong>Next</strong> and <strong>Previous</strong> buttons to move smoothly between activities.</li>
+          <li>When finished (or anytime you wish to review), click <strong>"Submit Worksheet"</strong> to view your full colorful report, charts, and 8 personalized recommendations.</li>
+        </ul>
+      </div>
+
+      <!-- Image1 (Shown ONLY in Introduction, fits completely and correctly) -->
+      <div class="my-6">
+        <div class="w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2">
+          <img id="img1El" src="Image1.jpg" alt="Thanksgiving Celebration Welcome"
+            onerror="handleImageFallback(this, 'Image1', 'Welcome to Mr. Rocha’s Thanksgiving English Class')"
+            class="media-full-fit max-h-[520px] mx-auto" />
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(1)"
+          class="px-6 py-3 rounded-xl font-extrabold text-white bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 shadow-md transition flex items-center gap-2 cursor-pointer">
+          <span>Start Activity 1</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 1: WATCH VIDEO & TELL MR. ROCHA ABOUT IT                     -->
+    <!-- ===================================================================== -->
+    <section id="section-1" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-300 mb-1">
+            Activity 1 of 8 • Listening &amp; Writing
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Watch the video. Tell Mr. Rocha about the video.
+          </h2>
+        </div>
+        <span id="badge-act1" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Video1 Container: Full available width -->
+      <div class="my-6">
+        <div class="w-full rounded-2xl overflow-hidden bg-black border border-slate-300 dark:border-slate-700 shadow-inner">
+          <video id="video1Player" controls playsinline preload="metadata" class="w-full h-auto max-h-[540px] block mx-auto">
+            <source src="Video1.mp4" type="video/mp4" />
+            <source src="Video1.webm" type="video/webm" />
+            <source src="Video1.ogg" type="video/ogg" />
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+        <div id="video1FallbackNote" class="hidden mt-2 p-3 rounded-xl bg-amber-50 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 text-xs sm:text-sm text-amber-900 dark:text-amber-300 flex items-center justify-between gap-2">
+          <span><i class="fa-solid fa-film mr-1.5"></i> Looking for <strong>Video1.mp4</strong> in the same folder. You can also load a local video file to preview:</span>
+          <label class="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold cursor-pointer hover:bg-amber-700 shrink-0">
+            Select Video1
+            <input type="file" accept="video/*" class="hidden" onchange="loadLocalMedia(this, 'video1Player')" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Answer Box -->
+      <div class="my-5">
+        <label for="act1Answer" class="block text-sm sm:text-base font-extrabold text-slate-800 dark:text-slate-200 mb-2">
+          Write your explanation for Mr. Rocha below (write at least 2–3 complete sentences describing what happens in the video):
+        </label>
+        <textarea id="act1Answer" rows="5" placeholder="Dear Mr. Rocha, in this video I saw..."
+          class="shiny-blue-box w-full p-4 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base leading-relaxed"></textarea>
+        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mt-1.5">
+          <span>Tip: Use capital letters, periods, and key Thanksgiving details.</span>
+          <span id="act1WordCount">0 words</span>
+        </div>
+      </div>
+
+      <!-- Check Answers & Feedback -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-1" onclick="checkActivity1()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-1" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(0)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(2)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 2</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 2: READ THE STORY & WRITE 5 SENTENCES (With Image2)          -->
+    <!-- ===================================================================== -->
+    <section id="section-2" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300 mb-1">
+            Activity 2 of 8 • Reading &amp; Summary
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Read the story and tell Mr. Rocha what it is about. Write 5 sentences.
+          </h2>
+        </div>
+        <span id="badge-act2" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Image2: Full space available, fits completely and correctly -->
+      <div class="my-6">
+        <div class="w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2">
+          <img id="img2El" src="Image2.jpg" alt="Thanksgiving Story Illustration"
+            onerror="handleImageFallback(this, 'Image2', 'Thanksgiving Story (Image2)')"
+            class="media-full-fit max-h-[600px] mx-auto" />
+        </div>
+      </div>
+
+      <!-- 5 Sentence Inputs -->
+      <div class="space-y-4 my-6">
+        <p class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200">
+          Write 5 complete sentences explaining what the story is about (start each sentence with a capital letter and end with punctuation):
+        </p>
+
+        <div id="act2SentencesContainer" class="space-y-3">
+          <!-- Generated cleanly via JS for 1..5 -->
+        </div>
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-2" onclick="checkActivity2()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-2" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(1)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(3)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 3</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 3: MEMORAMA GAME (ONLY WORDS - 9 PAIRS = 18 TILES)           -->
+    <!-- ===================================================================== -->
+    <section id="section-3" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 mb-1">
+            Activity 3 of 8 • Vocabulary Memory Game
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Match the pair words. (Thanksgiving Memorama)
+          </h2>
+        </div>
+        <span id="badge-act3" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Game Stats Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 my-5 p-4 rounded-2xl bg-amber-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
+        <div class="flex items-center gap-5">
+          <div>
+            <span class="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 block">Pairs Matched</span>
+            <span id="memoramaMatches" class="text-xl font-black text-emerald-600 dark:text-emerald-400">0 / 9</span>
+          </div>
+          <div>
+            <span class="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 block">Attempts</span>
+            <span id="memoramaAttempts" class="text-xl font-black text-sky-600 dark:text-sky-400">0</span>
+          </div>
+        </div>
+        <button type="button" id="resetMemoramaBtn" onclick="initMemorama()"
+          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-amber-600 hover:bg-amber-700 text-white shadow transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-shuffle"></i>
+          <span>Shuffle Cards</span>
+        </button>
+      </div>
+
+      <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold mb-4">
+        Click or tap two cards to flip them and match the identical Thanksgiving vocabulary words!
+      </p>
+
+      <!-- Memorama Grid: Responsive columns so words fit cleanly without wrapping/clipping -->
+      <div id="memoramaGrid" class="shiny-blue-box p-3 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 sm:gap-3.5">
+        <!-- 18 Word Cards injected via JS -->
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-3" onclick="checkActivity3()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-3" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(2)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(4)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 4</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 4: USE VOCABULARY TO WRITE 8 SENTENCES (With Image4)         -->
+    <!-- ===================================================================== -->
+    <section id="section-4" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 mb-1">
+            Activity 4 of 8 • Vocabulary Application
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Use the vocabulary below to write 8 sentences.
+          </h2>
+        </div>
+        <span id="badge-act4" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Image4: Full space available, fits completely and correctly -->
+      <div class="my-6">
+        <div class="w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2">
+          <img id="img4El" src="Image4.jpg" alt="Thanksgiving Vocabulary Reference"
+            onerror="handleImageFallback(this, 'Image4', 'Thanksgiving Vocabulary Chart (Image4)')"
+            class="media-full-fit max-h-[560px] mx-auto" />
+        </div>
+      </div>
+
+      <!-- Interactive Vocabulary Word Bank -->
+      <div class="my-5 p-4 rounded-2xl bg-sky-50 dark:bg-slate-800 border border-sky-200 dark:border-slate-700">
+        <h3 class="text-sm font-extrabold uppercase tracking-wider text-sky-800 dark:text-sky-300 mb-2.5">
+          <i class="fa-solid fa-book-open mr-1.5"></i> Thanksgiving Vocabulary Bank (Click a word to highlight or use in your sentences):
+        </h3>
+        <div id="vocabWordBank" class="flex flex-wrap gap-2">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- 8 Sentence Input Boxes -->
+      <div id="act4SentencesContainer" class="space-y-3 my-6">
+        <!-- Generated via JS for 1..8 -->
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-4" onclick="checkActivity4()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-4" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(3)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(5)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 5</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 5: 20-SQUARE DRAG & DROP IMAGE3 PUZZLE + TIMER               -->
+    <!-- ===================================================================== -->
+    <section id="section-5" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300 mb-1">
+            Activity 5 of 8 • Visual Spatial Puzzle
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Drag and drop each part of Image3 to form the complete image. (20 Squares)
+          </h2>
+        </div>
+        <span id="badge-act5" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Puzzle Controls & Timer -->
+      <div class="flex flex-wrap items-center justify-between gap-3 my-5 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-4">
+          <div class="px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 flex items-center gap-2">
+            <i class="fa-solid fa-stopwatch text-orange-500 text-lg"></i>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block leading-none">Timer</span>
+              <span id="puzzleTimerDisplay" class="text-lg font-black font-mono text-slate-900 dark:text-white">00:00</span>
+            </div>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 block">Correct Pieces</span>
+            <span id="puzzleCorrectCounter" class="text-lg font-black text-emerald-600 dark:text-emerald-400">0 / 20</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="puzzleStartBtn" onclick="startPuzzle()"
+            class="px-4 py-2.5 rounded-xl font-extrabold text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play"></i>
+            <span>Start</span>
+          </button>
+          <button type="button" id="puzzleRestartBtn" onclick="restartPuzzle()"
+            class="px-4 py-2.5 rounded-xl font-extrabold text-sm bg-amber-600 hover:bg-amber-700 text-white shadow transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span>Restart</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mb-4">
+        <i class="fa-solid fa-hand-pointer text-sky-500 mr-1"></i>
+        Click <strong>Start</strong> to shuffle the 20 squares and start the timer. Drag &amp; drop any two squares (or tap one square and tap another on mobile/tablet) to swap them!
+      </p>
+
+      <!-- Puzzle Workspace: Target Image3 Reference + 20-Square Interactive Board -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Target Reference Image3 -->
+        <div class="lg:col-span-4 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2 flex items-center justify-between">
+            <span><i class="fa-solid fa-image text-amber-500 mr-1"></i> Target Image3</span>
+            <span class="text-[11px] font-semibold text-slate-400">5 × 4 Grid</span>
+          </div>
+          <img id="img3TargetEl" src="Image3.jpg" alt="Target Image 3"
+            class="media-full-fit rounded-xl border border-slate-300 dark:border-slate-600" />
+        </div>
+
+        <!-- 20-Piece Interactive Puzzle Board (Uses all available space) -->
+        <div class="lg:col-span-8 w-full">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2 flex items-center justify-between">
+            <span><i class="fa-solid fa-puzzle-piece text-sky-500 mr-1"></i> Puzzle Board (20 Squares)</span>
+            <span id="puzzleStatusLabel" class="text-orange-600 dark:text-amber-400">Press Start to Begin</span>
+          </div>
+          <div id="puzzleBoardWrapper" class="shiny-blue-box w-full rounded-2xl overflow-hidden bg-slate-200 dark:bg-slate-800 p-1">
+            <div id="puzzleGrid" class="grid grid-cols-5 gap-0.5 w-full">
+              <!-- 20 Canvas/Div tiles generated dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-5" onclick="checkActivity5()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-5" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(4)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(6)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 6</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 6: LISTEN AND READ + 6 MULTIPLE CHOICE QUESTIONS             -->
+    <!-- ===================================================================== -->
+    <section id="section-6" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300 mb-1">
+            Activity 6 of 8 • Listening &amp; Reading Comprehension
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Listen and read. Select the correct answer.
+          </h2>
+        </div>
+        <span id="badge-act6" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- Audio1 Player -->
+      <div class="my-5 p-4 rounded-2xl bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span class="text-sm font-extrabold text-indigo-900 dark:text-indigo-300">
+            <i class="fa-solid fa-headphones mr-1.5"></i> Audio 1: Thanksgiving in the United States
+          </span>
+          <button type="button" onclick="readPassageAloud()"
+            class="px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition cursor-pointer">
+            <i class="fa-solid fa-volume-high mr-1"></i> Read Text Aloud (Backup)
+          </button>
+        </div>
+        <audio id="audio1Player" controls preload="metadata" class="w-full">
+          <source src="Audio1.mp3" type="audio/mpeg" />
+          <source src="Audio1.wav" type="audio/wav" />
+          <source src="Audio1.ogg" type="audio/ogg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+
+      <!-- Reading Passage -->
+      <article id="readingPassageText" class="my-6 p-5 sm:p-6 rounded-2xl bg-amber-50/70 dark:bg-slate-800/70 border border-amber-200 dark:border-slate-700 space-y-4 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-100">
+        <h3 class="text-xl sm:text-2xl font-black text-orange-700 dark:text-amber-400">
+          Thanksgiving in the United States
+        </h3>
+        <p>
+          Thanksgiving is a special holiday in the United States. It is on the fourth Thursday of November every year. On this day, families and friends come together to eat a big meal and say thank you for the good things in their lives.
+        </p>
+        <p>
+          The holiday started a long time ago. In 1621, a group of people called the Pilgrims had a feast with the Wampanoag people in Massachusetts. The Pilgrims came from England by ship. Their first year was very hard, and the Wampanoag helped them learn to grow food. After the harvest, they shared a meal to celebrate together.
+        </p>
+        <p>
+          Today, the most famous food at Thanksgiving is turkey. Many families cook a big turkey in the oven for several hours. They also make mashed potatoes, stuffing, corn, and green beans. For dessert, people often eat pumpkin pie. Cranberry sauce is another popular dish, and it is red and sweet.
+        </p>
+        <p>
+          Many people also enjoy fun traditions. In the morning, some people watch a big parade on television. Others play football in the yard or watch a game with their family. Before dinner, many families say what they are grateful for. A child might say, "I am grateful for my family," and a grandmother might say, "I am grateful for my health."
+        </p>
+        <p>
+          Thanksgiving is also a time to help other people. Some families give food to people who need it. Others work as volunteers in their town. The day after Thanksgiving is called Black Friday, and many people go shopping because there are big sales in the stores.
+        </p>
+        <p>
+          In the end, Thanksgiving is not only about food. It is about being together, being kind, and remembering to say thank you every day. It is a warm and happy day for everyone.
+        </p>
+      </article>
+
+      <!-- Reading Comprehension Questions -->
+      <div class="my-6">
+        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-4">
+          Reading Comprehension Questions
+        </h3>
+        <div id="act6QuestionsContainer" class="space-y-4">
+          <!-- 6 MCQs injected via JS -->
+        </div>
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-6" onclick="checkActivity6()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-6" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(5)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(7)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 7</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 7: LISTEN & EXPLAIN WHAT DIEGO, SARAH, MIKE LIKE             -->
+    <!-- ===================================================================== -->
+    <section id="section-7" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300 mb-1">
+            Activity 7 of 8 • Listening Comprehension
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Listen and explain what each person likes about Thanksgiving.
+          </h2>
+        </div>
+        <span id="badge-act7" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <!-- 3 Speakers Grid: Diego (Audio2), Sarah (Audio3), Mike (Audio4) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 my-6">
+        <!-- Diego -->
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-10 h-10 rounded-full bg-sky-600 text-white font-black flex items-center justify-center text-lg">D</div>
+              <div>
+                <h3 class="font-black text-lg text-slate-900 dark:text-white">Diego</h3>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Speaker 1 • Audio 2</span>
+              </div>
+            </div>
+            <audio controls preload="metadata" class="w-full mb-3">
+              <source src="Audio2.mp3" type="audio/mpeg" />
+              <source src="Audio2.wav" type="audio/wav" />
+              <source src="Audio2.ogg" type="audio/ogg" />
+            </audio>
+            <label for="act7Diego" class="block text-sm font-extrabold text-slate-800 dark:text-slate-200 mb-2">
+              What does Diego like about Thanksgiving?
+            </label>
+          </div>
+          <textarea id="act7Diego" rows="4" placeholder="Diego likes Thanksgiving because..."
+            class="shiny-blue-box w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm sm:text-base"></textarea>
+        </div>
+
+        <!-- Sarah -->
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-10 h-10 rounded-full bg-amber-600 text-white font-black flex items-center justify-center text-lg">S</div>
+              <div>
+                <h3 class="font-black text-lg text-slate-900 dark:text-white">Sarah</h3>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Speaker 2 • Audio 3</span>
+              </div>
+            </div>
+            <audio controls preload="metadata" class="w-full mb-3">
+              <source src="Audio3.mp3" type="audio/mpeg" />
+              <source src="Audio3.wav" type="audio/wav" />
+              <source src="Audio3.ogg" type="audio/ogg" />
+            </audio>
+            <label for="act7Sarah" class="block text-sm font-extrabold text-slate-800 dark:text-slate-200 mb-2">
+              What does Sarah like about Thanksgiving?
+            </label>
+          </div>
+          <textarea id="act7Sarah" rows="4" placeholder="Sarah likes Thanksgiving because..."
+            class="shiny-blue-box w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm sm:text-base"></textarea>
+        </div>
+
+        <!-- Mike -->
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-black flex items-center justify-center text-lg">M</div>
+              <div>
+                <h3 class="font-black text-lg text-slate-900 dark:text-white">Mike</h3>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Speaker 3 • Audio 4</span>
+              </div>
+            </div>
+            <audio controls preload="metadata" class="w-full mb-3">
+              <source src="Audio4.mp3" type="audio/mpeg" />
+              <source src="Audio4.wav" type="audio/wav" />
+              <source src="Audio4.ogg" type="audio/ogg" />
+            </audio>
+            <label for="act7Mike" class="block text-sm font-extrabold text-slate-800 dark:text-slate-200 mb-2">
+              What does Mike like about Thanksgiving?
+            </label>
+          </div>
+          <textarea id="act7Mike" rows="4" placeholder="Mike likes Thanksgiving because..."
+            class="shiny-blue-box w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm sm:text-base"></textarea>
+        </div>
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-7" onclick="checkActivity7()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-7" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(6)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+        <button type="button" onclick="goToSection(8)"
+          class="px-5 py-2.5 rounded-xl font-bold text-white bg-orange-600 hover:bg-orange-700 transition flex items-center gap-2 cursor-pointer">
+          <span>Next: Activity 8</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ACTIVITY 8: 8 A2 COMPLEX SENTENCES SCRAMBLE + AUDIO BUTTONS           -->
+    <!-- ===================================================================== -->
+    <section id="section-8" class="activity-section hidden bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300 mb-1">
+            Activity 8 of 8 • A2 Complex Sentence Builder
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+            Drag and drop the words to form complete sentences. Listen to each sentence!
+          </h2>
+        </div>
+        <span id="badge-act8" class="px-3 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          Not Checked Yet
+        </span>
+      </div>
+
+      <p class="text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-300 my-4">
+        Click the <strong class="text-sky-600 dark:text-sky-400"><i class="fa-solid fa-volume-high"></i> Listen</strong> button to hear the complete sentence read aloud, then drag and drop (or tap) the scrambled words in the right order inside the shiny blue sentence box.
+      </p>
+
+      <!-- 8 Sentence Scramble Cards -->
+      <div id="act8Container" class="space-y-5 my-6">
+        <!-- Generated dynamically via JS -->
+      </div>
+
+      <!-- Check Answers -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button type="button" id="checkBtn-8" onclick="checkActivity8()"
+          class="px-5 py-2.5 rounded-xl font-extrabold text-white bg-sky-600 hover:bg-sky-700 shadow transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-check-double"></i>
+          <span>Check Answers</span>
+        </button>
+      </div>
+      <div id="feedback-8" class="hidden mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold"></div>
+
+      <!-- Prev / Submit Worksheet Navigation -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-6 mt-6 border-t border-slate-200 dark:border-slate-800">
+        <button type="button" onclick="goToSection(7)"
+          class="px-5 py-2.5 rounded-xl font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Previous</span>
+        </button>
+
+        <button type="button" onclick="submitWorksheet()"
+          class="px-7 py-3.5 rounded-2xl font-black text-base sm:text-lg text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 hover:from-emerald-700 hover:to-sky-700 shadow-lg transition flex items-center gap-2.5 cursor-pointer">
+          <i class="fa-solid fa-award text-xl"></i>
+          <span>Submit Worksheet &amp; View Results</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- FINAL RESULTS DASHBOARD (With Charts, Bars & 8 Recommendations)       -->
+    <!-- ===================================================================== -->
+    <section id="section-results" class="hidden bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-amber-200/80 dark:border-slate-800 p-5 sm:p-8">
+      <!-- Top Results Banner -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200 dark:border-slate-800 print-break-inside-avoid">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 mb-1">
+            Official Performance Report
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+            Mr. Rocha’s English Class: Thanksgiving
+          </h2>
+          <div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm font-bold text-slate-600 dark:text-slate-300">
+            <span><i class="fa-solid fa-user text-sky-500 mr-1.5"></i>Student: <strong id="resStudentName" class="text-slate-900 dark:text-white">Student</strong></span>
+            <span><i class="fa-solid fa-calendar-check text-amber-500 mr-1.5"></i>Date: <strong id="resStudentDate" class="text-slate-900 dark:text-white">—</strong></span>
+          </div>
+        </div>
+
+        <!-- Print & Back Controls -->
+        <div class="flex flex-wrap items-center gap-2.5 no-print">
+          <button type="button" onclick="goToSection(1)"
+            class="px-4 py-2.5 rounded-xl font-bold text-sm bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition cursor-pointer">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back to Activities
+          </button>
+          <button type="button" onclick="printResults()"
+            class="px-5 py-2.5 rounded-xl font-extrabold text-sm bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-print"></i>
+            <span>Print Results</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Overall Score & Teacher Feedback Hero Card -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 my-6 print-break-inside-avoid">
+        <!-- Score Gauge Card -->
+        <div class="md:col-span-4 rounded-2xl p-6 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white shadow-lg flex flex-col items-center justify-center text-center print-keep-white">
+          <span class="text-xs uppercase font-extrabold tracking-widest opacity-90">Overall Score</span>
+          <div id="resOverallPercent" class="text-5xl sm:text-6xl font-black my-2">0%</div>
+          <div id="resGradeBadge" class="px-4 py-1 rounded-full bg-white/20 backdrop-blur text-sm font-extrabold">
+            Keep Practicing!
+          </div>
+          <p id="resCompletedSummary" class="text-xs mt-3 opacity-95 font-semibold">
+            0 of 8 Activities Completed
+          </p>
+        </div>
+
+        <!-- Mr. Rocha's Feedback Card -->
+        <div class="md:col-span-8 rounded-2xl p-6 bg-sky-50 dark:bg-slate-800/90 border-2 border-sky-300 dark:border-sky-700 flex flex-col justify-center">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-11 h-11 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xl shadow">
+              <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">Mr. Rocha’s Feedback</h3>
+              <span class="text-xs font-bold text-sky-700 dark:text-sky-400">Personalized Evaluation</span>
+            </div>
+          </div>
+          <p id="resTeacherFeedback" class="text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed font-semibold mt-1">
+            Great effort on your Thanksgiving worksheet! Review your activity breakdown below.
+          </p>
+        </div>
+      </div>
+
+      <!-- Colorful Visual Charts Section (Bar Graph + Doughnut Chart + Skill Bars) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 my-6 print-break-inside-avoid">
+        <!-- Colorful Bar Chart: Score by Activity (1-8) -->
+        <div class="lg:col-span-7 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+          <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-chart-column text-orange-500"></i> Activity Performance Bar Chart
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mb-3">Percentage score achieved in each of the 8 activities</p>
+          <div class="w-full overflow-x-auto">
+            <canvas id="activityBarChart" class="w-full h-64 block"></canvas>
+          </div>
+        </div>
+
+        <!-- Colorful Doughnut Chart: Overall Mastery Breakdown -->
+        <div class="lg:col-span-5 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-emerald-500"></i> Points Distribution Chart
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mb-3">Earned vs. Remaining Points</p>
+          </div>
+          <div class="flex flex-col items-center justify-center my-auto">
+            <canvas id="masteryDoughnutChart" width="220" height="220" class="max-w-full"></canvas>
+          </div>
+          <div id="doughnutLegend" class="flex justify-center gap-4 text-xs font-extrabold mt-3">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Colorful Horizontal Progress Bars for Each Activity -->
+      <div class="my-6 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 print-break-inside-avoid">
+        <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-bars-progress text-sky-500"></i> Detailed Activity Score Bars
+        </h3>
+        <div id="activityHorizontalBars" class="space-y-3.5">
+          <!-- 8 Colorful Bars generated via JS -->
+        </div>
+      </div>
+
+      <!-- 8 Specific Tailored Recommendations -->
+      <div class="my-6 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-amber-50 via-orange-50/70 to-sky-50 dark:from-slate-800 dark:to-slate-800/90 border border-amber-200 dark:border-slate-700">
+        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+          <i class="fa-solid fa-lightbulb text-amber-500"></i> 8 Specific Recommendations for Your English Growth
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-semibold mb-4">
+          Tailored directly from your answers and performance across Activities 1–8:
+        </p>
+        <div id="recommendationsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- 8 Recommendation Cards injected via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT LOGIC: STATE, INTERACTIVITY, GRADING, CHARTS & MEDIA         -->
+  <!-- ======================================================================= -->
+  <script>
+    /* -----------------------------------------------------------------------
+       1. GLOBAL STATE & ACTIVITY DATA
+    ----------------------------------------------------------------------- */
+    const state = {
+      currentSection: 0, // 0 = Intro, 1..8 = Activities, 9 = Results
+      checked: {
+        1: false, 2: false, 3: false, 4: false,
+        5: false, 6: false, 7: false, 8: false
+      },
+      scores: {
+        1: 0, 2: 0, 3: 0, 4: 0,
+        5: 0, 6: 0, 7: 0, 8: 0
+      },
+      details: {
+        1: {}, 2: {}, 3: {}, 4: {},
+        5: {}, 6: {}, 7: {}, 8: {}
+      }
+    };
+
+    const ACTIVITY_NAMES = {
+      1: "Act 1: Video Reflection",
+      2: "Act 2: Story Summary (5 Sentences)",
+      3: "Act 3: Word Pair Memorama",
+      4: "Act 4: Vocabulary Sentences (8)",
+      5: "Act 5: 20-Square Image Puzzle",
+      6: "Act 6: Listen & Read Comprehension",
+      7: "Act 7: Listening (Diego, Sarah, Mike)",
+      8: "Act 8: A2 Complex Sentences"
+    };
+
+    const CHART_COLORS = [
+      '#0ea5e9', // Sky Blue
+      '#8b5cf6', // Purple
+      '#f59e0b', // Amber
+      '#10b981', // Emerald
+      '#f43f5e', // Rose
+      '#6366f1', // Indigo
+      '#14b8a6', // Teal
+      '#f97316'  // Orange
+    ];
+
+    /* -----------------------------------------------------------------------
+       2. INITIALIZATION & THEME / NAVIGATION HELPERS
+    ----------------------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      // Default date to today in YYYY-MM-DD format if desired, or leave ready for dropdown
+      const dateInput = document.getElementById('worksheetDate');
+      if (dateInput && !dateInput.value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+      }
+
+      // Initialize all activity UIs
+      setupActivity1Listeners();
+      buildActivity2Inputs();
+      initMemorama();
+      buildActivity4UI();
+      initPuzzle();
+      buildActivity6Questions();
+      buildActivity8Sentences();
+
+      // Check video1 load error gracefully
+      const v1 = document.getElementById('video1Player');
+      if (v1) {
+        v1.addEventListener('error', () => {
+          document.getElementById('video1FallbackNote').classList.remove('hidden');
+        }, true);
+      }
+
+      // Set initial nav state
+      goToSection(0, false);
+    });
+
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const msgEl = document.getElementById('toastMessage');
+      msgEl.textContent = msg;
+      banner.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3500);
+    }
+
+    // Dark & Light Mode Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark');
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+
+      if (isDark) {
+        icon.className = 'fa-solid fa-sun';
+        text.textContent = 'Light Mode';
+      } else {
+        icon.className = 'fa-solid fa-moon';
+        text.textContent = 'Dark Mode';
+      }
+
+      // Redraw charts if on results screen
+      if (state.currentSection === 9) {
+        renderCharts();
+      }
+    }
+
+    // Navigation between Intro (0), Activities (1..8), and Results (9)
+    function goToSection(stepIndex, shouldScroll = true) {
+      state.currentSection = stepIndex;
+
+      // Hide all sections
+      document.getElementById('section-intro').classList.add('hidden');
+      for (let i = 1; i <= 8; i++) {
+        document.getElementById(`section-${i}`).classList.add('hidden');
+      }
+      document.getElementById('section-results').classList.add('hidden');
+
+      // Show target section
+      if (stepIndex === 0) {
+        document.getElementById('section-intro').classList.remove('hidden');
+      } else if (stepIndex >= 1 && stepIndex <= 8) {
+        document.getElementById(`section-${stepIndex}`).classList.remove('hidden');
+        if (stepIndex === 5) {
+          // Ensure puzzle canvas sizes correctly when shown
+          setTimeout(renderPuzzleTiles, 30);
+        }
+      } else if (stepIndex === 9) {
+        document.getElementById('section-results').classList.remove('hidden');
+      }
+
+      updateProgressAndNav();
+
+      // Scroll smoothly/instantly to the top of the page as requested
+      if (shouldScroll) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function updateProgressAndNav() {
+      const checkedCount = Object.values(state.checked).filter(Boolean).length;
+      const pct = Math.round((checkedCount / 8) * 100);
+
+      const sectionNames = [
+        'Introduction', 'Activity 1', 'Activity 2', 'Activity 3', 'Activity 4',
+        'Activity 5', 'Activity 6', 'Activity 7', 'Activity 8', 'Final Results'
+      ];
+
+      document.getElementById('progressLabel').textContent =
+        `Section: ${sectionNames[state.currentSection]} (${checkedCount} of 8 Activities Checked)`;
+      document.getElementById('progressPercent').textContent = `${pct}%`;
+      document.getElementById('progressBarFill').style.width = `${Math.max(5, pct)}%`;
+
+      // Update top navigation pills
+      document.querySelectorAll('.nav-pill').forEach(btn => {
+        const navIdx = Number(btn.getAttribute('data-nav'));
+        btn.className = 'nav-pill px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer ';
+
+        if (navIdx === state.currentSection) {
+          btn.className += 'bg-orange-600 text-white shadow-sm';
+        } else if (navIdx >= 1 && navIdx <= 8 && state.checked[navIdx]) {
+          btn.className += 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700';
+        } else {
+          btn.className += 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700';
+        }
+      });
+    }
+
+    // Graceful Image Fallback (.jpg -> .png -> .jpeg -> clean inline SVG fallback so layout never breaks)
+    function handleImageFallback(imgEl, baseName, labelText) {
+      const currentSrc = imgEl.getAttribute('src') || '';
+      if (currentSrc.endsWith('.jpg')) {
+        imgEl.src = `${baseName}.png`;
+      } else if (currentSrc.endsWith('.png')) {
+        imgEl.src = `${baseName}.jpeg`;
+      } else if (currentSrc.endsWith('.jpeg')) {
+        imgEl.src = `${baseName}.webp`;
+      } else {
+        // Create crisp vector illustration fallback with exact dimensions so it fits completely
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f59e0b"/>
+              <stop offset="50%" stop-color="#ea580c"/>
+              <stop offset="100%" stop-color="#9a3412"/>
+            </linearGradient>
+          </defs>
+          <rect width="900" height="420" rx="20" fill="url(#g)"/>
+          <circle cx="140" cy="110" r="65" fill="rgba(255,255,255,0.14)"/>
+          <circle cx="770" cy="310" r="95" fill="rgba(255,255,255,0.12)"/>
+          <text x="450" y="185" font-family="Nunito, sans-serif" font-size="34" font-weight="800" fill="#ffffff" text-anchor="middle">${labelText}</text>
+          <text x="450" y="235" font-family="Nunito, sans-serif" font-size="20" font-weight="600" fill="#fef3c7" text-anchor="middle">Place "${baseName}.jpg" or "${baseName}.png" in the same folder as this HTML file</text>
+        </svg>`;
+        imgEl.onerror = null;
+        imgEl.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      }
+    }
+
+    function loadLocalMedia(inputEl, targetId) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.src = url;
+        target.load && target.load();
+      }
+    }
+
+    function markActivityChecked(actNum, scorePct, feedbackHtml, isGood) {
+      state.checked[actNum] = true;
+      state.scores[actNum] = Math.round(scorePct);
+
+      const badge = document.getElementById(`badge-act${actNum}`);
+      if (badge) {
+        badge.textContent = `Checked • Score: ${state.scores[actNum]}%`;
+        badge.className = `px-3 py-1 rounded-full text-xs font-extrabold ${
+          scorePct >= 70
+            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300'
+            : 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300'
+        }`;
+      }
+
+      const checkBtn = document.getElementById(`checkBtn-${actNum}`);
+      if (checkBtn) {
+        checkBtn.disabled = true;
+        checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        checkBtn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Answers Checked &amp; Locked</span>`;
+      }
+
+      const fbBox = document.getElementById(`feedback-${actNum}`);
+      if (fbBox) {
+        fbBox.innerHTML = feedbackHtml;
+        fbBox.classList.remove('hidden');
+        fbBox.className = `mt-4 p-4 rounded-2xl border text-sm sm:text-base font-semibold ${
+          isGood
+            ? 'bg-emerald-50 border-emerald-300 text-emerald-900 dark:bg-emerald-950/60 dark:border-emerald-700 dark:text-emerald-200'
+            : 'bg-rose-50 border-rose-300 text-rose-900 dark:bg-rose-950/60 dark:border-rose-700 dark:text-rose-200'
+        }`;
+      }
+
+      updateProgressAndNav();
+    }
+
+    /* -----------------------------------------------------------------------
+       3. ACTIVITY 1: VIDEO REFLECTION
+    ----------------------------------------------------------------------- */
+    function setupActivity1Listeners() {
+      const ta = document.getElementById('act1Answer');
+      const wc = document.getElementById('act1WordCount');
+      ta.addEventListener('input', () => {
+        const words = ta.value.trim().split(/\s+/).filter(Boolean);
+        wc.textContent = `${words.length} word${words.length === 1 ? '' : 's'}`;
+      });
+    }
+
+    function checkActivity1() {
+      if (state.checked[1]) return;
+      const ta = document.getElementById('act1Answer');
+      const text = ta.value.trim();
+      const words = text.split(/\s+/).filter(Boolean);
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 2);
+
+      // Lock textarea
+      ta.disabled = true;
+
+      const keywords = ['thanksgiving', 'video', 'family', 'turkey', 'food', 'thank', 'grateful', 'pilgrim', 'celebrate', 'holiday', 'eat', 'together'];
+      const lower = text.toLowerCase();
+      const matchedKeywords = keywords.filter(k => lower.includes(k));
+
+      let score = 0;
+      if (words.length >= 15 && sentences.length >= 2 && matchedKeywords.length >= 1) {
+        score = 100;
+      } else if (words.length >= 8) {
+        score = 70;
+      } else if (words.length > 0) {
+        score = 40;
+      } else {
+        score = 0;
+      }
+
+      state.details[1] = { wordCount: words.length, sentenceCount: sentences.length, keywords: matchedKeywords };
+
+      if (score >= 70) {
+        ta.classList.add('answer-correct');
+        markActivityChecked(1, score,
+          `<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> <strong>Great job!</strong> You wrote ${words.length} words (${sentences.length} sentence(s)) explaining the video to Mr. Rocha.`,
+          true
+        );
+      } else {
+        ta.classList.add('answer-incorrect');
+        markActivityChecked(1, score,
+          `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1.5"></i> <strong>Needs more detail (${score}%):</strong> ${
+            words.length === 0
+              ? 'You did not write a response before checking.'
+              : `You wrote ${words.length} word(s). Try to write at least 2–3 full sentences describing the video's main ideas.`
+          }`,
+          false
+        );
+      }
+    }
+
+    /* -----------------------------------------------------------------------
+       4. ACTIVITY 2: STORY SUMMARY (5 SENTENCES)
+    ----------------------------------------------------------------------- */
+    function buildActivity2Inputs() {
+      const container = document.getElementById('act2SentencesContainer');
+      container.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const div = document.createElement('div');
+        div.className = 'flex flex-col sm:flex-row sm:items-center gap-2';
+        div.innerHTML = `
+          <span class="w-8 h-8 rounded-xl bg-purple-600 text-white font-black text-sm flex items-center justify-center shrink-0">${i}</span>
+          <div class="flex-1">
+            <input type="text" id="act2Sent-${i}" placeholder="Write sentence #${i} about the story..."
+              class="shiny-blue-box w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold text-sm sm:text-base" />
+            <div id="act2Hint-${i}" class="hidden text-xs font-bold mt-1"></div>
+          </div>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    function checkActivity2() {
+      if (state.checked[2]) return;
+      let validCount = 0;
+      const results = [];
+
+      for (let i = 1; i <= 5; i++) {
+        const inp = document.getElementById(`act2Sent-${i}`);
+        const hint = document.getElementById(`act2Hint-${i}`);
+        const val = inp.value.trim();
+        inp.disabled = true;
+
+        const words = val.split(/\s+/).filter(Boolean);
+        const startsCapital = /^[A-Z]/.test(val);
+        const endsPunct = /[.!?]$/.test(val);
+        const isGoodSentence = words.length >= 4 && startsCapital && endsPunct;
+
+        hint.classList.remove('hidden');
+        if (isGoodSentence) {
+          validCount++;
+          inp.classList.add('answer-correct');
+          hint.className = 'text-xs font-bold mt-1 text-emerald-600 dark:text-emerald-400';
+          hint.innerHTML = `<i class="fa-solid fa-check mr-1"></i> Complete sentence!`;
+        } else {
+          inp.classList.add('answer-incorrect');
+          hint.className = 'text-xs font-bold mt-1 text-rose-600 dark:text-rose-400';
+          if (!val) {
+            hint.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i> Empty sentence.`;
+          } else {
+            const issues = [];
+            if (!startsCapital) issues.push('start with a capital letter');
+            if (!endsPunct) issues.push('end with a period (.)');
+            if (words.length < 4) issues.push('include at least 4 words');
+            hint.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i> Tip: Please ${issues.join(', ')}.`;
+          }
+        }
+        results.push(isGoodSentence);
+      }
+
+      const score = (validCount / 5) * 100;
+      state.details[2] = { validCount, results };
+
+      markActivityChecked(2, score,
+        `<strong>Result: ${validCount} out of 5 sentences</strong> met complete sentence rules (capitalization, punctuation, and complete thought).`,
+        validCount >= 4
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       5. ACTIVITY 3: THANKSGIVING MEMORAMA (WORDS ONLY)
+    ----------------------------------------------------------------------- */
+    const MEMORAMA_WORDS = [
+      'Turkey', 'Pumpkin', 'Family',
+      'Feast', 'Harvest', 'Grateful',
+      'Pilgrim', 'Stuffing', 'Cranberry'
+    ];
+
+    let memoCards = [];
+    let flippedIndices = [];
+    let matchedWords = new Set();
+    let memoAttempts = 0;
+    let memoLockBoard = false;
+
+    function initMemorama() {
+      if (state.checked[3]) return;
+      matchedWords.clear();
+      flippedIndices = [];
+      memoAttempts = 0;
+      memoLockBoard = false;
+
+      // Duplicate 9 words -> 18 cards, Fisher-Yates shuffle
+      memoCards = [...MEMORAMA_WORDS, ...MEMORAMA_WORDS];
+      for (let i = memoCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [memoCards[i], memoCards[j]] = [memoCards[j], memoCards[i]];
+      }
+
+      updateMemoramaStats();
+      renderMemoramaGrid();
+    }
+
+    function updateMemoramaStats() {
+      document.getElementById('memoramaMatches').textContent = `${matchedWords.size} / ${MEMORAMA_WORDS.length}`;
+      document.getElementById('memoramaAttempts').textContent = memoAttempts;
+    }
+
+    function renderMemoramaGrid() {
+      const grid = document.getElementById('memoramaGrid');
+      grid.innerHTML = '';
+
+      memoCards.forEach((word, idx) => {
+        const isMatched = matchedWords.has(word);
+        const isFlipped = flippedIndices.includes(idx) || isMatched;
+
+        const card = document.createElement('div');
+        card.className = `memory-card h-20 sm:h-24 md:h-28 ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}`;
+        card.setAttribute('data-idx', idx);
+        card.onclick = () => handleMemoramaClick(idx);
+
+        card.innerHTML = `
+          <div class="memory-card-inner">
+            <!-- Card Front (Hidden Word) -->
+            <div class="memory-card-front bg-gradient-to-br from-amber-500 to-orange-600 text-white border-2 border-amber-300 dark:border-amber-700 shadow-md">
+              <span class="text-xs sm:text-sm font-black uppercase tracking-wider opacity-95">Thanksgiving</span>
+            </div>
+            <!-- Card Back (Word Only, sized cleanly to fit inside tile) -->
+            <div class="memory-card-back ${
+              isMatched
+                ? 'bg-emerald-100 dark:bg-emerald-900/80 border-2 border-emerald-500 text-emerald-900 dark:text-emerald-200'
+                : 'bg-white dark:bg-slate-800 border-2 border-sky-400 text-slate-900 dark:text-white'
+            } shadow-md">
+              <span class="text-xs sm:text-sm md:text-base font-black tracking-tight px-1">${word}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function handleMemoramaClick(idx) {
+      if (state.checked[3] || memoLockBoard) return;
+      const word = memoCards[idx];
+      if (matchedWords.has(word) || flippedIndices.includes(idx)) return;
+
+      flippedIndices.push(idx);
+      renderMemoramaGrid();
+
+      if (flippedIndices.length === 2) {
+        memoAttempts++;
+        updateMemoramaStats();
+        const [firstIdx, secondIdx] = flippedIndices;
+
+        if (memoCards[firstIdx] === memoCards[secondIdx]) {
+          matchedWords.add(memoCards[firstIdx]);
+          flippedIndices = [];
+          updateMemoramaStats();
+          renderMemoramaGrid();
+          if (matchedWords.size === MEMORAMA_WORDS.length) {
+            showToast('Awesome! You matched all 9 Thanksgiving word pairs!');
+          }
+        } else {
+          memoLockBoard = true;
+          setTimeout(() => {
+            flippedIndices = [];
+            memoLockBoard = false;
+            renderMemoramaGrid();
+          }, 850);
+        }
+      }
+    }
+
+    function checkActivity3() {
+      if (state.checked[3]) return;
+      const resetBtn = document.getElementById('resetMemoramaBtn');
+      if (resetBtn) {
+        resetBtn.disabled = true;
+        resetBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+
+      const pairsFound = matchedWords.size;
+      const score = (pairsFound / MEMORAMA_WORDS.length) * 100;
+      state.details[3] = { pairsFound, totalPairs: MEMORAMA_WORDS.length, attempts: memoAttempts };
+
+      // Reveal remaining cards cleanly when locked
+      const grid = document.getElementById('memoramaGrid');
+      grid.classList.add(pairsFound === 9 ? 'answer-correct' : 'answer-incorrect');
+
+      markActivityChecked(3, score,
+        `<strong>Memorama Checked:</strong> You matched <strong>${pairsFound} out of 9</strong> Thanksgiving word pairs in ${memoAttempts} attempts.`,
+        pairsFound >= 7
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       6. ACTIVITY 4: USE VOCABULARY TO WRITE 8 SENTENCES (With Image4)
+    ----------------------------------------------------------------------- */
+    const VOCAB_WORDS = [
+      'Turkey', 'Pumpkin', 'Family', 'Feast',
+      'Harvest', 'Grateful', 'Pilgrim', 'Stuffing',
+      'Cranberry', 'Tradition', 'Celebrate', 'Thankful'
+    ];
+
+    function buildActivity4UI() {
+      const bank = document.getElementById('vocabWordBank');
+      bank.innerHTML = VOCAB_WORDS.map(w => `
+        <span class="px-3 py-1 rounded-xl text-xs sm:text-sm font-extrabold bg-white dark:bg-slate-900 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-700 shadow-xs">
+          ${w}
+        </span>
+      `).join('');
+
+      const container = document.getElementById('act4SentencesContainer');
+      container.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const row = document.createElement('div');
+        row.className = 'flex flex-col sm:flex-row sm:items-center gap-2';
+        row.innerHTML = `
+          <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shrink-0">${i}</span>
+          <div class="flex-1">
+            <input type="text" id="act4Sent-${i}" placeholder="Write sentence #${i} using a Thanksgiving vocabulary word..."
+              class="shiny-blue-box w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold text-sm sm:text-base" />
+            <div id="act4Hint-${i}" class="hidden text-xs font-bold mt-1"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      }
+    }
+
+    function checkActivity4() {
+      if (state.checked[4]) return;
+      let validCount = 0;
+      const usedVocabSet = new Set();
+
+      for (let i = 1; i <= 8; i++) {
+        const inp = document.getElementById(`act4Sent-${i}`);
+        const hint = document.getElementById(`act4Hint-${i}`);
+        const val = inp.value.trim();
+        inp.disabled = true;
+
+        const lower = val.toLowerCase();
+        const foundWord = VOCAB_WORDS.find(w => lower.includes(w.toLowerCase()));
+        const words = val.split(/\s+/).filter(Boolean);
+        const startsCapital = /^[A-Z]/.test(val);
+        const endsPunct = /[.!?]$/.test(val);
+
+        const isCorrect = Boolean(foundWord) && words.length >= 4 && startsCapital && endsPunct;
+        hint.classList.remove('hidden');
+
+        if (isCorrect) {
+          validCount++;
+          usedVocabSet.add(foundWord);
+          inp.classList.add('answer-correct');
+          hint.className = 'text-xs font-bold mt-1 text-emerald-600 dark:text-emerald-400';
+          hint.innerHTML = `<i class="fa-solid fa-check mr-1"></i> Great sentence using "<strong>${foundWord}</strong>"!`;
+        } else {
+          inp.classList.add('answer-incorrect');
+          hint.className = 'text-xs font-bold mt-1 text-rose-600 dark:text-rose-400';
+          if (!val) {
+            hint.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i> No sentence entered.`;
+          } else if (!foundWord) {
+            hint.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i> Please include one of the vocabulary words from the box above.`;
+          } else {
+            hint.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i> Used "${foundWord}", but make sure to start with a capital letter, write at least 4 words, and end with punctuation.`;
+          }
+        }
+      }
+
+      const score = (validCount / 8) * 100;
+      state.details[4] = { validCount, uniqueVocabUsed: Array.from(usedVocabSet) };
+
+      markActivityChecked(4, score,
+        `<strong>Result: ${validCount} out of 8 vocabulary sentences</strong> are complete and accurately use Thanksgiving vocabulary.`,
+        validCount >= 6
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       7. ACTIVITY 5: 20-SQUARE DRAG & DROP IMAGE3 PUZZLE + TIMER
+    ----------------------------------------------------------------------- */
+    const PUZZLE_COLS = 5;
+    const PUZZLE_ROWS = 4; // 5 x 4 = 20 squares
+    let puzzleOrder = Array.from({ length: 20 }, (_, i) => i);
+    let puzzleStarted = false;
+    let puzzleTimerInterval = null;
+    let puzzleSeconds = 0;
+    let selectedPuzzleSlot = null;
+    let puzzleSourceImage = null;
+
+    function initPuzzle() {
+      const targetImg = document.getElementById('img3TargetEl');
+      // Handle fallback if Image3.jpg is not present
+      targetImg.onerror = function() {
+        handleImageFallback(this, 'Image3', 'Thanksgiving Harvest Puzzle (Image3)');
+      };
+      targetImg.onload = function() {
+        puzzleSourceImage = targetImg;
+        renderPuzzleTiles();
+      };
+      // Trigger initial render
+      puzzleOrder = Array.from({ length: 20 }, (_, i) => i);
+      renderPuzzleTiles();
+    }
+
+    function formatTime(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function startPuzzle() {
+      if (state.checked[5]) return;
+      puzzleStarted = true;
+      selectedPuzzleSlot = null;
+      shufflePuzzleOrder();
+      renderPuzzleTiles();
+
+      document.getElementById('puzzleStatusLabel').textContent = 'Puzzle Active! Swap squares to match Target Image3';
+
+      clearInterval(puzzleTimerInterval);
+      puzzleSeconds = 0;
+      document.getElementById('puzzleTimerDisplay').textContent = '00:00';
+      puzzleTimerInterval = setInterval(() => {
+        puzzleSeconds++;
+        document.getElementById('puzzleTimerDisplay').textContent = formatTime(puzzleSeconds);
+      }, 1000);
+    }
+
+    function restartPuzzle() {
+      if (state.checked[5]) return;
+      startPuzzle();
+      showToast('Puzzle reshuffled and timer restarted!');
+    }
+
+    function shufflePuzzleOrder() {
+      for (let i = puzzleOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [puzzleOrder[i], puzzleOrder[j]] = [puzzleOrder[j], puzzleOrder[i]];
+      }
+      // Guarantee it is not already 100% solved
+      if (puzzleOrder.every((val, idx) => val === idx)) {
+        [puzzleOrder[0], puzzleOrder[1]] = [puzzleOrder[1], puzzleOrder[0]];
+      }
+    }
+
+    function countCorrectPuzzlePieces() {
+      let count = 0;
+      for (let i = 0; i < 20; i++) {
+        if (puzzleOrder[i] === i) count++;
+      }
+      document.getElementById('puzzleCorrectCounter').textContent = `${count} / 20`;
+      return count;
+    }
+
+    function renderPuzzleTiles() {
+      const grid = document.getElementById('puzzleGrid');
+      const targetImg = document.getElementById('img3TargetEl');
+      grid.innerHTML = '';
+
+      // Compute aspect ratio based on target image or default 5:4
+      const natW = (targetImg && targetImg.naturalWidth) ? targetImg.naturalWidth : 800;
+      const natH = (targetImg && targetImg.naturalHeight) ? targetImg.naturalHeight : 640;
+      const tileAspect = (natW / PUZZLE_COLS) / (natH / PUZZLE_ROWS);
+
+      puzzleOrder.forEach((pieceId, slotIndex) => {
+        const origCol = pieceId % PUZZLE_COLS;
+        const origRow = Math.floor(pieceId / PUZZLE_COLS);
+
+        const tile = document.createElement('div');
+        tile.className = `puzzle-tile relative overflow-hidden bg-slate-300 dark:bg-slate-700 select-none ${
+          (!puzzleStarted || state.checked[5]) ? 'locked cursor-default' : 'cursor-grab active:cursor-grabbing'
+        } ${selectedPuzzleSlot === slotIndex ? 'selected-tile' : ''}`;
+        tile.style.aspectRatio = `${tileAspect}`;
+
+        // Render slice using canvas so any local image (jpg/png/svg) slices cleanly
+        const canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = Math.round(200 / tileAspect);
+        canvas.className = 'w-full h-full block pointer-events-none';
+        const ctx = canvas.getContext('2d');
+
+        if (targetImg && targetImg.complete && targetImg.naturalWidth > 0) {
+          const sw = targetImg.naturalWidth / PUZZLE_COLS;
+          const sh = targetImg.naturalHeight / PUZZLE_ROWS;
+          ctx.drawImage(
+            targetImg,
+            origCol * sw, origRow * sh, sw, sh,
+            0, 0, canvas.width, canvas.height
+          );
+        } else {
+          ctx.fillStyle = '#f59e0b';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 24px Nunito, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(`#${pieceId + 1}`, canvas.width / 2, canvas.height / 2);
+        }
+
+        tile.appendChild(canvas);
+
+        // If checked, show subtle green/red border on each square
+        if (state.checked[5]) {
+          const isPieceRight = pieceId === slotIndex;
+          tile.style.outline = isPieceRight ? '2px solid #10b981' : '2px solid #ef4444';
+          tile.style.outlineOffset = '-2px';
+        }
+
+        // Enable Drag & Drop + Click/Tap Swap when active
+        if (puzzleStarted && !state.checked[5]) {
+          tile.draggable = true;
+
+          tile.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', String(slotIndex));
+            tile.classList.add('opacity-60');
+          });
+
+          tile.addEventListener('dragend', () => {
+            tile.classList.remove('opacity-60');
+          });
+
+          tile.addEventListener('dragover', (e) => {
+            e.preventDefault();
+          });
+
+          tile.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const fromSlot = Number(e.dataTransfer.getData('text/plain'));
+            if (!Number.isNaN(fromSlot) && fromSlot !== slotIndex) {
+              swapPuzzleSlots(fromSlot, slotIndex);
+            }
+          });
+
+          // Tap/Click-to-swap support for phones & tablets
+          tile.addEventListener('click', () => {
+            if (selectedPuzzleSlot === null) {
+              selectedPuzzleSlot = slotIndex;
+              renderPuzzleTiles();
+            } else if (selectedPuzzleSlot === slotIndex) {
+              selectedPuzzleSlot = null;
+              renderPuzzleTiles();
+            } else {
+              const first = selectedPuzzleSlot;
+              selectedPuzzleSlot = null;
+              swapPuzzleSlots(first, slotIndex);
+            }
+          });
+        }
+
+        grid.appendChild(tile);
+      });
+
+      countCorrectPuzzlePieces();
+    }
+
+    function swapPuzzleSlots(slotA, slotB) {
+      [puzzleOrder[slotA], puzzleOrder[slotB]] = [puzzleOrder[slotB], puzzleOrder[slotA]];
+      renderPuzzleTiles();
+
+      const correctNow = countCorrectPuzzlePieces();
+      if (correctNow === 20) {
+        clearInterval(puzzleTimerInterval);
+        document.getElementById('puzzleStatusLabel').textContent = `Completed in ${formatTime(puzzleSeconds)}!`;
+        showToast(`Congratulations! You solved the 20-piece puzzle in ${formatTime(puzzleSeconds)}!`);
+      }
+    }
+
+    function checkActivity5() {
+      if (state.checked[5]) return;
+      clearInterval(puzzleTimerInterval);
+
+      const startBtn = document.getElementById('puzzleStartBtn');
+      const restartBtn = document.getElementById('puzzleRestartBtn');
+      [startBtn, restartBtn].forEach(b => {
+        if (b) {
+          b.disabled = true;
+          b.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      });
+
+      // If student never clicked Start, count 0% so unstarted solved state isn't free points
+      const correctPieces = puzzleStarted ? countCorrectPuzzlePieces() : 0;
+      const score = (correctPieces / 20) * 100;
+      state.details[5] = { started: puzzleStarted, correctPieces, timeSeconds: puzzleSeconds };
+
+      renderPuzzleTiles();
+
+      const wrapper = document.getElementById('puzzleBoardWrapper');
+      wrapper.classList.add(correctPieces >= 15 ? 'answer-correct' : 'answer-incorrect');
+
+      markActivityChecked(5, score,
+        puzzleStarted
+          ? `<strong>Puzzle Result:</strong> You placed <strong>${correctPieces} out of 20</strong> squares in their exact positions in <strong>${formatTime(puzzleSeconds)}</strong>.`
+          : `<strong>Puzzle Not Started:</strong> You checked Activity 5 before clicking Start (0 / 20 squares solved).`,
+        correctPieces >= 14
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       8. ACTIVITY 6: LISTEN & READ COMPREHENSION (6 MCQs)
+    ----------------------------------------------------------------------- */
+    const ACT6_QUESTIONS = [
+      {
+        q: '1. When is Thanksgiving?',
+        options: [
+          'A) The first Monday of November',
+          'B) The last Friday of December',
+          'C) The fourth Thursday of November',
+          'D) The second Sunday of October'
+        ],
+        correctIdx: 2
+      },
+      {
+        q: '2. Who helped the Pilgrims learn to grow food?',
+        options: [
+          'A) The Wampanoag people',
+          'B) Their friends in England',
+          'C) The sailors on the ship',
+          'D) Their neighbors in Texas'
+        ],
+        correctIdx: 0
+      },
+      {
+        q: '3. What is the most famous Thanksgiving food?',
+        options: [
+          'A) Pizza',
+          'B) Rice',
+          'C) Fish',
+          'D) Turkey'
+        ],
+        correctIdx: 3
+      },
+      {
+        q: '4. What do many families do before dinner?',
+        options: [
+          'A) They go shopping',
+          'B) They say what they are grateful for',
+          'C) They watch a movie',
+          'D) They go to sleep'
+        ],
+        correctIdx: 1
+      },
+      {
+        q: '5. How do some families help other people?',
+        options: [
+          'A) They sell pies',
+          'B) They travel to England',
+          'C) They give food to people who need it',
+          'D) They build new houses'
+        ],
+        correctIdx: 2
+      },
+      {
+        q: '6. What is Black Friday?',
+        options: [
+          'A) A day for football games',
+          'B) The day after Thanksgiving, when people shop',
+          'C) A parade in Massachusetts',
+          'D) A dessert made with pumpkin'
+        ],
+        correctIdx: 1
+      }
+    ];
+
+    function buildActivity6Questions() {
+      const container = document.getElementById('act6QuestionsContainer');
+      container.innerHTML = '';
+
+      ACT6_QUESTIONS.forEach((item, qIdx) => {
+        const card = document.createElement('div');
+        card.id = `act6Card-${qIdx}`;
+        card.className = 'shiny-blue-box p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/90';
+
+        const optionsHtml = item.options.map((opt, optIdx) => `
+          <label id="act6OptLabel-${qIdx}-${optIdx}"
+            class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-700/70 cursor-pointer transition">
+            <input type="radio" name="act6_q_${qIdx}" value="${optIdx}"
+              class="w-4 h-4 text-sky-600 focus:ring-sky-500 cursor-pointer" />
+            <span class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100">${opt}</span>
+          </label>
+        `).join('');
+
+        card.innerHTML = `
+          <p class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white mb-3">${item.q}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            ${optionsHtml}
+          </div>
+          <div id="act6Feedback-${qIdx}" class="hidden mt-2.5 text-xs sm:text-sm font-extrabold"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function readPassageAloud() {
+      if (!('speechSynthesis' in window)) {
+        showToast('Speech synthesis is not supported in this browser.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const text = document.getElementById('readingPassageText').innerText;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.95;
+      window.speechSynthesis.speak(utter);
+      showToast('Reading passage aloud...');
+    }
+
+    function checkActivity6() {
+      if (state.checked[6]) return;
+      let correctCount = 0;
+      const missedQuestions = [];
+
+      ACT6_QUESTIONS.forEach((item, qIdx) => {
+        const radios = document.querySelectorAll(`input[name="act6_q_${qIdx}"]`);
+        let selectedIdx = null;
+        radios.forEach(r => {
+          if (r.checked) selectedIdx = Number(r.value);
+          r.disabled = true;
+        });
+
+        const card = document.getElementById(`act6Card-${qIdx}`);
+        const fb = document.getElementById(`act6Feedback-${qIdx}`);
+        fb.classList.remove('hidden');
+
+        // Highlight the correct option label
+        const correctLabel = document.getElementById(`act6OptLabel-${qIdx}-${item.correctIdx}`);
+        if (correctLabel) {
+          correctLabel.classList.add('bg-emerald-100', 'dark:bg-emerald-900/60', 'border-emerald-500');
+        }
+
+        if (selectedIdx === item.correctIdx) {
+          correctCount++;
+          card.classList.add('answer-correct');
+          fb.className = 'mt-2.5 text-xs sm:text-sm font-extrabold text-emerald-700 dark:text-emerald-300';
+          fb.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Correct!`;
+        } else {
+          card.classList.add('answer-incorrect');
+          missedQuestions.push(qIdx + 1);
+          if (selectedIdx !== null) {
+            const wrongLabel = document.getElementById(`act6OptLabel-${qIdx}-${selectedIdx}`);
+            if (wrongLabel) {
+              wrongLabel.classList.add('bg-rose-100', 'dark:bg-rose-900/60', 'border-rose-500');
+            }
+          }
+          fb.className = 'mt-2.5 text-xs sm:text-sm font-extrabold text-rose-700 dark:text-rose-300';
+          fb.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> Incorrect. Correct Answer: <strong>${item.options[item.correctIdx]}</strong>`;
+        }
+      });
+
+      const score = (correctCount / ACT6_QUESTIONS.length) * 100;
+      state.details[6] = { correctCount, total: ACT6_QUESTIONS.length, missedQuestions };
+
+      markActivityChecked(6, score,
+        `<strong>Reading Comprehension Score: ${correctCount} out of 6</strong> correct (${Math.round(score)}%).`,
+        correctCount >= 4
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       9. ACTIVITY 7: LISTENING (DIEGO, SARAH, MIKE)
+    ----------------------------------------------------------------------- */
+    function checkActivity7() {
+      if (state.checked[7]) return;
+      const speakers = [
+        { id: 'act7Diego', name: 'Diego' },
+        { id: 'act7Sarah', name: 'Sarah' },
+        { id: 'act7Mike', name: 'Mike' }
+      ];
+
+      let completedSpeakers = 0;
+      speakers.forEach(sp => {
+        const el = document.getElementById(sp.id);
+        const val = el.value.trim();
+        el.disabled = true;
+        const words = val.split(/\s+/).filter(Boolean);
+
+        if (words.length >= 4) {
+          completedSpeakers++;
+          el.classList.add('answer-correct');
+        } else {
+          el.classList.add('answer-incorrect');
+        }
+      });
+
+      const score = (completedSpeakers / 3) * 100;
+      state.details[7] = { completedSpeakers };
+
+      markActivityChecked(7, score,
+        `<strong>Listening Responses Checked:</strong> You wrote complete explanations for <strong>${completedSpeakers} out of 3</strong> speakers (Diego, Sarah, and Mike).`,
+        completedSpeakers >= 2
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       10. ACTIVITY 8: 8 A2 COMPLEX SENTENCES SCRAMBLE + AUDIO
+    ----------------------------------------------------------------------- */
+    const A2_SENTENCES = [
+      "Families gather together because they want to celebrate Thanksgiving.",
+      "When Thanksgiving arrives in November, people cook a big turkey.",
+      "After they finish the delicious meal, everyone eats sweet pumpkin pie.",
+      "Although the weather is cold outside, the house feels warm and happy.",
+      "Before dinner starts, each person says what they are grateful for.",
+      "Many people watch a parade on television while they prepare the stuffing.",
+      "If someone needs food on Thanksgiving, kind volunteers help them.",
+      "The Pilgrims had a harvest feast so that they could thank their friends."
+    ];
+
+    let act8State = []; // Array of { bank: [], answer: [] }
+
+    function buildActivity8Sentences() {
+      const container = document.getElementById('act8Container');
+      container.innerHTML = '';
+      act8State = [];
+
+      A2_SENTENCES.forEach((sentence, idx) => {
+        const words = sentence.split(' ');
+        const shuffled = [...words];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        if (shuffled.join(' ') === sentence) {
+          [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+        }
+
+        act8State.push({
+          bank: shuffled.map((w, wIdx) => ({ id: `${idx}-${wIdx}`, text: w })),
+          answer: []
+        });
+
+        const card = document.createElement('div');
+        card.id = `act8Card-${idx}`;
+        card.className = 'p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700';
+
+        card.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="font-black text-sm sm:text-base text-orange-700 dark:text-amber-400">
+              Sentence ${idx + 1} of 8
+            </span>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="speakSentence(${idx})"
+                class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-sky-600 hover:bg-sky-700 text-white shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-volume-high"></i>
+                <span>Listen to Sentence</span>
+              </button>
+              <button type="button" id="act8ResetBtn-${idx}" onclick="resetSentenceScramble(${idx})"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 transition cursor-pointer">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Dropzone Answer Box (Shiny Blue Border) -->
+          <div class="mb-2 text-xs font-bold text-slate-500 dark:text-slate-400">
+            Your Sentence (Drop or click words in order):
+          </div>
+          <div id="act8AnswerZone-${idx}"
+            ondragover="event.preventDefault()"
+            ondrop="handleSentenceDrop(event, ${idx}, 'answer')"
+            class="shiny-blue-box min-h-[56px] p-2.5 rounded-xl bg-white dark:bg-slate-900 flex flex-wrap items-center gap-2 mb-3">
+          </div>
+
+          <!-- Shuffled Word Bank -->
+          <div class="mb-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+            Shuffled Words:
+          </div>
+          <div id="act8BankZone-${idx}"
+            ondragover="event.preventDefault()"
+            ondrop="handleSentenceDrop(event, ${idx}, 'bank')"
+            class="min-h-[48px] p-2.5 rounded-xl bg-slate-200/70 dark:bg-slate-950/60 border border-dashed border-slate-400 dark:border-slate-600 flex flex-wrap items-center gap-2">
+          </div>
+
+          <div id="act8Feedback-${idx}" class="hidden mt-2.5 text-xs sm:text-sm font-extrabold"></div>
+        `;
+
+        container.appendChild(card);
+        renderSentenceZones(idx);
+      });
+    }
+
+    function renderSentenceZones(idx) {
+      const answerZone = document.getElementById(`act8AnswerZone-${idx}`);
+      const bankZone = document.getElementById(`act8BankZone-${idx}`);
+      const locked = state.checked[8];
+
+      answerZone.innerHTML = '';
+      if (act8State[idx].answer.length === 0) {
+        answerZone.innerHTML = `<span class="text-xs italic text-slate-400 select-none">Drag or tap words from below to build Sentence ${idx + 1}...</span>`;
+      } else {
+        act8State[idx].answer.forEach((chipObj, chipPos) => {
+          answerZone.appendChild(createWordChipEl(idx, chipObj, 'answer', chipPos, locked));
+        });
+      }
+
+      bankZone.innerHTML = '';
+      act8State[idx].bank.forEach((chipObj, chipPos) => {
+        bankZone.appendChild(createWordChipEl(idx, chipObj, 'bank', chipPos, locked));
+      });
+    }
+
+    function createWordChipEl(sentIdx, chipObj, zoneName, chipPos, locked) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = chipObj.text;
+      btn.className = `word-chip px-3 py-1.5 rounded-lg text-sm font-extrabold shadow-xs border ${
+        zoneName === 'answer'
+          ? 'bg-sky-100 text-sky-900 border-sky-400 dark:bg-sky-900/70 dark:text-sky-100 dark:border-sky-600'
+          : 'bg-white text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600 hover:border-orange-400'
+      } ${locked ? 'locked cursor-default' : 'cursor-grab active:cursor-grabbing'}`;
+
+      if (!locked) {
+        btn.draggable = true;
+        btn.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', JSON.stringify({ sentIdx, chipId: chipObj.id, fromZone: zoneName }));
+        });
+
+        // Allow dropping onto a specific chip inside answer zone to reorder smoothly
+        btn.addEventListener('dragover', (e) => e.preventDefault());
+        btn.addEventListener('drop', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          try {
+            const payload = JSON.parse(e.dataTransfer.getData('text/plain'));
+            if (payload.sentIdx === sentIdx) {
+              moveWordChip(sentIdx, payload.chipId, zoneName, chipPos);
+            }
+          } catch (_) {}
+        });
+
+        // Click / Tap toggles chip between bank and answer
+        btn.addEventListener('click', () => {
+          const targetZone = zoneName === 'bank' ? 'answer' : 'bank';
+          moveWordChip(sentIdx, chipObj.id, targetZone, null);
+        });
+      }
+      return btn;
+    }
+
+    function handleSentenceDrop(e, sentIdx, targetZone) {
+      e.preventDefault();
+      if (state.checked[8]) return;
+      try {
+        const payload = JSON.parse(e.dataTransfer.getData('text/plain'));
+        if (payload.sentIdx === sentIdx) {
+          moveWordChip(sentIdx, payload.chipId, targetZone, null);
+        }
+      } catch (_) {}
+    }
+
+    function moveWordChip(sentIdx, chipId, targetZone, insertIndex) {
+      const s = act8State[sentIdx];
+      let chipObj = null;
+
+      const bIdx = s.bank.findIndex(c => c.id === chipId);
+      if (bIdx !== -1) {
+        [chipObj] = s.bank.splice(bIdx, 1);
+      } else {
+        const aIdx = s.answer.findIndex(c => c.id === chipId);
+        if (aIdx !== -1) {
+          [chipObj] = s.answer.splice(aIdx, 1);
+        }
+      }
+
+      if (!chipObj) return;
+
+      if (targetZone === 'answer') {
+        if (insertIndex !== null && insertIndex >= 0 && insertIndex <= s.answer.length) {
+          s.answer.splice(insertIndex, 0, chipObj);
+        } else {
+          s.answer.push(chipObj);
+        }
+      } else {
+        s.bank.push(chipObj);
+      }
+
+      renderSentenceZones(sentIdx);
+    }
+
+    function resetSentenceScramble(idx) {
+      if (state.checked[8]) return;
+      const all = [...act8State[idx].bank, ...act8State[idx].answer];
+      for (let i = all.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [all[i], all[j]] = [all[j], all[i]];
+      }
+      act8State[idx].bank = all;
+      act8State[idx].answer = [];
+      renderSentenceZones(idx);
+    }
+
+    function speakSentence(idx) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Audio speech is not supported in this browser.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(A2_SENTENCES[idx]);
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function checkActivity8() {
+      if (state.checked[8]) return;
+      let correctSentences = 0;
+
+      A2_SENTENCES.forEach((target, idx) => {
+        const userSentence = act8State[idx].answer.map(c => c.text).join(' ');
+        const zone = document.getElementById(`act8AnswerZone-${idx}`);
+        const fb = document.getElementById(`act8Feedback-${idx}`);
+        const resetBtn = document.getElementById(`act8ResetBtn-${idx}`);
+        if (resetBtn) {
+          resetBtn.disabled = true;
+          resetBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        fb.classList.remove('hidden');
+        if (userSentence === target) {
+          correctSentences++;
+          zone.classList.add('answer-correct');
+          fb.className = 'mt-2.5 text-xs sm:text-sm font-extrabold text-emerald-700 dark:text-emerald-300';
+          fb.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Perfect A2 Complex Sentence!`;
+        } else {
+          zone.classList.add('answer-incorrect');
+          fb.className = 'mt-2.5 text-xs sm:text-sm font-extrabold text-rose-700 dark:text-rose-300';
+          fb.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> Expected order: <span class="underline">${target}</span>`;
+        }
+      });
+
+      const score = (correctSentences / A2_SENTENCES.length) * 100;
+      state.details[8] = { correctSentences, total: A2_SENTENCES.length };
+
+      // Re-render zones in locked mode
+      for (let i = 0; i < A2_SENTENCES.length; i++) {
+        renderSentenceZones(i);
+      }
+
+      markActivityChecked(8, score,
+        `<strong>Sentence Builder Score: ${correctSentences} out of 8</strong> A2 complex sentences arranged accurately.`,
+        correctSentences >= 6
+      );
+    }
+
+    /* -----------------------------------------------------------------------
+       11. SUBMIT WORKSHEET, RESULTS DASHBOARD, CHARTS & 8 RECOMMENDATIONS
+    ----------------------------------------------------------------------- */
+    function evaluateUncheckedQuietly(actNum) {
+      // Allow user to check results even if they haven't completed or clicked Check on every activity
+      // Computes current score without locking out unfinished work if they choose to go back
+      if (state.checked[actNum]) return state.scores[actNum];
+
+      switch (actNum) {
+        case 1: {
+          const text = document.getElementById('act1Answer').value.trim();
+          const words = text.split(/\s+/).filter(Boolean);
+          return words.length >= 15 ? 100 : words.length >= 8 ? 70 : words.length > 0 ? 40 : 0;
+        }
+        case 2: {
+          let ok = 0;
+          for (let i = 1; i <= 5; i++) {
+            const v = document.getElementById(`act2Sent-${i}`).value.trim();
+            if (v.split(/\s+/).filter(Boolean).length >= 4 && /^[A-Z]/.test(v) && /[.!?]$/.test(v)) ok++;
+          }
+          return Math.round((ok / 5) * 100);
+        }
+        case 3:
+          return Math.round((matchedWords.size / MEMORAMA_WORDS.length) * 100);
+        case 4: {
+          let ok = 0;
+          for (let i = 1; i <= 8; i++) {
+            const v = document.getElementById(`act4Sent-${i}`).value.trim();
+            const hasV = VOCAB_WORDS.some(w => v.toLowerCase().includes(w.toLowerCase()));
+            if (hasV && v.split(/\s+/).filter(Boolean).length >= 4 && /^[A-Z]/.test(v) && /[.!?]$/.test(v)) ok++;
+          }
+          return Math.round((ok / 8) * 100);
+        }
+        case 5:
+          return puzzleStarted ? Math.round((countCorrectPuzzlePieces() / 20) * 100) : 0;
+        case 6: {
+          let ok = 0;
+          ACT6_QUESTIONS.forEach((item, qIdx) => {
+            const sel = document.querySelector(`input[name="act6_q_${qIdx}"]:checked`);
+            if (sel && Number(sel.value) === item.correctIdx) ok++;
+          });
+          return Math.round((ok / ACT6_QUESTIONS.length) * 100);
+        }
+        case 7: {
+          let ok = 0;
+          ['act7Diego', 'act7Sarah', 'act7Mike'].forEach(id => {
+            const v = document.getElementById(id).value.trim();
+            if (v.split(/\s+/).filter(Boolean).length >= 4) ok++;
+          });
+          return Math.round((ok / 3) * 100);
+        }
+        case 8: {
+          let ok = 0;
+          A2_SENTENCES.forEach((target, idx) => {
+            const built = act8State[idx].answer.map(c => c.text).join(' ');
+            if (built === target) ok++;
+          });
+          return Math.round((ok / A2_SENTENCES.length) * 100);
+        }
+        default:
+          return 0;
+      }
+    }
+
+    function submitWorksheet() {
+      const studentName = document.getElementById('studentName').value.trim() || 'Guest Student';
+      const studentDate = document.getElementById('worksheetDate').value || 'Not Selected';
+
+      document.getElementById('resStudentName').textContent = studentName;
+      document.getElementById('resStudentDate').textContent = studentDate;
+
+      const currentScores = [];
+      let completedActivities = 0;
+
+      for (let i = 1; i <= 8; i++) {
+        const s = evaluateUncheckedQuietly(i);
+        currentScores.push(s);
+        if (state.checked[i] || s > 0) completedActivities++;
+      }
+
+      const overallAvg = Math.round(currentScores.reduce((a, b) => a + b, 0) / 8);
+
+      document.getElementById('resOverallPercent').textContent = `${overallAvg}%`;
+      document.getElementById('resCompletedSummary').textContent = `${completedActivities} of 8 Activities Attempted`;
+
+      let gradeText = 'Needs Improvement';
+      let teacherFeedback = '';
+
+      if (overallAvg >= 90) {
+        gradeText = 'Outstanding Mastery (A)';
+        teacherFeedback = `Wonderful work, ${studentName}! You demonstrated strong English reading, listening, vocabulary, and A2 sentence-building skills across the Thanksgiving activities. Keep up this impressive dedication!`;
+      } else if (overallAvg >= 75) {
+        gradeText = 'Great Job (B)';
+        teacherFeedback = `Well done, ${studentName}! You have a solid understanding of Thanksgiving vocabulary and comprehension. Review the specific recommendations below to polish any remaining details.`;
+      } else if (overallAvg >= 50) {
+        gradeText = 'Good Effort (C)';
+        teacherFeedback = `Good start, ${studentName}! You completed several parts of the worksheet well, while a few activities need extra practice or completion. Follow the 8 targeted recommendations below to boost your score.`;
+      } else {
+        gradeText = 'Keep Practicing (In Progress)';
+        teacherFeedback = `Thank you for submitting your progress, ${studentName}. Remember you can return to any unchecked activities to complete them and practice the 8 personalized recommendations below.`;
+      }
+
+      document.getElementById('resGradeBadge').textContent = gradeText;
+      document.getElementById('resTeacherFeedback').textContent = teacherFeedback;
+
+      renderHorizontalScoreBars(currentScores);
+      renderRecommendations(currentScores);
+
+      goToSection(9, true);
+      setTimeout(() => renderCharts(currentScores, overallAvg), 60);
+    }
+
+    function renderHorizontalScoreBars(scoresArr) {
+      const container = document.getElementById('activityHorizontalBars');
+      container.innerHTML = '';
+
+      scoresArr.forEach((score, idx) => {
+        const color = CHART_COLORS[idx % CHART_COLORS.length];
+        const statusTag = state.checked[idx + 1] ? 'Checked' : (score > 0 ? 'In Progress' : 'Not Started');
+
+        const row = document.createElement('div');
+        row.innerHTML = `
+          <div class="flex justify-between items-center text-xs sm:text-sm font-extrabold mb-1">
+            <span class="text-slate-800 dark:text-slate-100">${ACTIVITY_NAMES[idx + 1]}</span>
+            <span class="flex items-center gap-2">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${statusTag}</span>
+              <span style="color: ${color};">${score}%</span>
+            </span>
+          </div>
+          <div class="w-full h-3.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-700" style="width: ${score}%; background-color: ${color};"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderCharts(scoresArr, overallAvg) {
+      if (!scoresArr) {
+        scoresArr = [];
+        for (let i = 1; i <= 8; i++) scoresArr.push(evaluateUncheckedQuietly(i));
+        overallAvg = Math.round(scoresArr.reduce((a, b) => a + b, 0) / 8);
+      }
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#e2e8f0' : '#1e293b';
+      const gridColor = isDark ? 'rgba(148, 163, 184, 0.2)' : 'rgba(100, 116, 139, 0.2)';
+
+      // 1. Colorful Bar Chart
+      const barCanvas = document.getElementById('activityBarChart');
+      const bCtx = barCanvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = barCanvas.getBoundingClientRect();
+      barCanvas.width = (rect.width || 520) * dpr;
+      barCanvas.height = 250 * dpr;
+      bCtx.scale(dpr, dpr);
+
+      const W = rect.width || 520;
+      const H = 250;
+      bCtx.clearRect(0, 0, W, H);
+
+      const padLeft = 38;
+      const padBottom = 34;
+      const padTop = 20;
+      const padRight = 14;
+      const chartW = W - padLeft - padRight;
+      const chartH = H - padTop - padBottom;
+
+      // Grid lines (0%, 25%, 50%, 75%, 100%)
+      bCtx.font = 'bold 11px Nunito, sans-serif';
+      bCtx.textAlign = 'right';
+      bCtx.textBaseline = 'middle';
+
+      [0, 25, 50, 75, 100].forEach(val => {
+        const y = padTop + chartH - (val / 100) * chartH;
+        bCtx.strokeStyle = gridColor;
+        bCtx.lineWidth = 1;
+        bCtx.beginPath();
+        bCtx.moveTo(padLeft, y);
+        bCtx.lineTo(W - padRight, y);
+        bCtx.stroke();
+
+        bCtx.fillStyle = textColor;
+        bCtx.fillText(`${val}%`, padLeft - 6, y);
+      });
+
+      // Bars
+      const slotW = chartW / 8;
+      const barW = Math.min(38, slotW * 0.62);
+
+      scoresArr.forEach((score, i) => {
+        const x = padLeft + i * slotW + (slotW - barW) / 2;
+        const barH = Math.max(4, (score / 100) * chartH);
+        const y = padTop + chartH - barH;
+
+        bCtx.fillStyle = CHART_COLORS[i];
+        bCtx.beginPath();
+        bCtx.roundRect(x, y, barW, barH, [6, 6, 0, 0]);
+        bCtx.fill();
+
+        // Value label above bar
+        bCtx.fillStyle = textColor;
+        bCtx.textAlign = 'center';
+        bCtx.textBaseline = 'bottom';
+        bCtx.font = '800 11px Nunito, sans-serif';
+        bCtx.fillText(`${score}%`, x + barW / 2, y - 3);
+
+        // X-axis label
+        bCtx.textBaseline = 'top';
+        bCtx.fillText(`Act ${i + 1}`, x + barW / 2, padTop + chartH + 8);
+      });
+
+      // 2. Colorful Doughnut Chart
+      const dCanvas = document.getElementById('masteryDoughnutChart');
+      const dCtx = dCanvas.getContext('2d');
+      dCtx.clearRect(0, 0, dCanvas.width, dCanvas.height);
+
+      const cx = dCanvas.width / 2;
+      const cy = dCanvas.height / 2;
+      const radius = 84;
+      const lineWidth = 26;
+
+      // Background ring
+      dCtx.beginPath();
+      dCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+      dCtx.strokeStyle = isDark ? '#334155' : '#e2e8f0';
+      dCtx.lineWidth = lineWidth;
+      dCtx.stroke();
+
+      // Colorful segmented arc for earned score
+      if (overallAvg > 0) {
+        const startAngle = -Math.PI / 2;
+        const endAngle = startAngle + (overallAvg / 100) * Math.PI * 2;
+        const grad = dCtx.createLinearGradient(0, 0, dCanvas.width, dCanvas.height);
+        grad.addColorStop(0, '#10b981');
+        grad.addColorStop(0.5, '#0ea5e9');
+        grad.addColorStop(1, '#f59e0b');
+
+        dCtx.beginPath();
+        dCtx.arc(cx, cy, radius, startAngle, endAngle);
+        dCtx.strokeStyle = grad;
+        dCtx.lineWidth = lineWidth;
+        dCtx.lineCap = 'round';
+        dCtx.stroke();
+      }
+
+      // Center text
+      dCtx.fillStyle = textColor;
+      dCtx.textAlign = 'center';
+      dCtx.textBaseline = 'middle';
+      dCtx.font = '900 28px Nunito, sans-serif';
+      dCtx.fillText(`${overallAvg}%`, cx, cy - 6);
+      dCtx.font = '700 12px Nunito, sans-serif';
+      dCtx.fillText('Total Mastery', cx, cy + 16);
+
+      document.getElementById('doughnutLegend').innerHTML = `
+        <span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Earned (${overallAvg}%)
+        </span>
+        <span class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+          <span class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600 inline-block"></span> Remaining (${100 - overallAvg}%)
+        </span>
+      `;
+    }
+
+    function renderRecommendations(scoresArr) {
+      const grid = document.getElementById('recommendationsGrid');
+      grid.innerHTML = '';
+
+      const recs = [
+        // 1. Video Reflection
+        scoresArr[0] >= 80
+          ? { title: '1. Video Listening & Summarizing', text: 'Excellent job capturing the video details! Next, practice using transition words like "First," "Next," and "Finally" when summarizing videos.' }
+          : { title: '1. Video Listening & Summarizing', text: 'Re-watch Video1 and write 3–4 full sentences answering Who, What, and Why about the Thanksgiving scenes you observe.' },
+
+        // 2. Story Summary (5 sentences)
+        scoresArr[1] >= 80
+          ? { title: '2. Story Summary & Sentence Structure', text: 'Your 5-sentence summary shows strong reading comprehension and punctuation. Challenge yourself to combine shorter ideas using "and" or "because."' }
+          : { title: '2. Story Summary & Sentence Structure', text: 'Look closely at Image2 and make sure each of your 5 sentences starts with a capital letter, has a clear subject + verb, and ends with a period.' },
+
+        // 3. Memorama
+        scoresArr[2] >= 80
+          ? { title: '3. Thanksgiving Word Recognition', text: 'Strong visual memory for Thanksgiving vocabulary! Practice spelling and pronouncing each of the 9 words (Turkey, Pumpkin, Harvest, Grateful, etc.) aloud.' }
+          : { title: '3. Thanksgiving Word Recognition', text: 'Play the Memorama word-matching game again and say each word aloud (Pilgrim, Stuffing, Cranberry, Feast) every time you flip a card to build memory.' },
+
+        // 4. Vocabulary 8 sentences
+        scoresArr[3] >= 80
+          ? { title: '4. Active Vocabulary Usage', text: 'You effectively used Thanksgiving vocabulary in context! Try writing a short paragraph combining 4 or more of these words into one cohesive story.' }
+          : { title: '4. Active Vocabulary Usage', text: 'Review the vocabulary box in Activity 4 and ensure every single sentence includes one target word used naturally with proper punctuation.' },
+
+        // 5. Image3 20-square puzzle
+        scoresArr[4] >= 80
+          ? { title: '5. Visual Attention to Detail', text: 'Great spatial focus assembling the 20-square puzzle! Observing visual context clues helps you predict meaning when reading English texts.' }
+          : { title: '5. Visual Attention to Detail', text: 'When solving the 20-square puzzle of Image3, start by placing the 4 corner pieces and outer border edges first while comparing with Target Image3.' },
+
+        // 6. Listen & Read Comprehension
+        scoresArr[5] >= 80
+          ? { title: '6. Reading & Listening Comprehension', text: 'Strong comprehension of Thanksgiving history and traditions! Try retelling the story of the 1621 Pilgrims and Wampanoag feast in your own words.' }
+          : { title: '6. Reading & Listening Comprehension', text: 'Listen to Audio1 while following the text line by line, and underline key facts like "fourth Thursday of November" and "Wampanoag people."' },
+
+        // 7. Diego, Sarah, Mike Listening
+        scoresArr[6] >= 80
+          ? { title: '7. Identifying Speaker Opinions', text: 'You accurately captured what Diego, Sarah, and Mike enjoy about Thanksgiving! Practice comparing their preferences using phrases like "Unlike Diego, Sarah likes..."' }
+          : { title: '7. Identifying Speaker Opinions', text: 'Listen to Audio2, Audio3, and Audio4 two times each—first for the general idea, and second to note the exact food or tradition each speaker loves.' },
+
+        // 8. A2 Complex Sentences
+        scoresArr[7] >= 80
+          ? { title: '8. A2 Complex Sentence Grammar', text: 'Fantastic mastery of A2 conjunctions (because, when, after, although, before, while, if, so that)! Use these connectors in your daily English writing.' }
+          : { title: '8. A2 Complex Sentence Grammar', text: 'Use the "Listen to Sentence" audio button in Activity 8 and pay attention to where connecting words like "because," "when," and "although" appear.' }
+      ];
+
+      recs.forEach((rec, idx) => {
+        const color = CHART_COLORS[idx % CHART_COLORS.length];
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-xs flex gap-3 items-start print-break-inside-avoid';
+        card.innerHTML = `
+          <div class="w-8 h-8 rounded-xl text-white font-black text-sm flex items-center justify-center shrink-0 mt-0.5" style="background-color: ${color};">
+            ${idx + 1}
+          </div>
+          <div>
+            <h4 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white mb-1">${rec.title}</h4>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${rec.text}</p>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function printResults() {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.print();
+      }, 100);
+    }
+  </script>
+</body>
+</html>
